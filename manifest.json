@@ -2,7 +2,7 @@
     "name": "Record Management System",
     "short_name": "RMS",
     "description": "A secure dashboard for managing user records and roles.",
-    "start_url": "login.html",
+    "start_url": "index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#2660cc",
