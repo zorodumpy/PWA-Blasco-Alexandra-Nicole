@@ -1,0 +1,290 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2660cc">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(reg => console.log('SW Registered'))
+        .catch(err => console.log('SW Registration Failed', err));
+    });
+  }
+</script>
+    <style>
+        /* Basic Reset and Global Styles */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #ffffff; /* Light gray background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- Login Container Styling (The Card) --- */
+        .login-container {
+            background-color: #d1d1d1;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); 
+            width: 350px;
+            text-align: center;
+            box-sizing: border-box; 
+        }
+
+        /* --- Logo Area Styling --- */
+        .logo-section h3 { 
+            font-weight: 700; 
+            font-size: 15px; 
+            color: #0f0f0f; 
+            margin-top: 5px; 
+        }
+        .logo-section i { 
+            font-size: 50px; 
+            color: #fbfbfb; 
+        }
+
+        .logo-text {
+            font-size: 10px;
+            font-weight: bold;
+            color: #0a0707;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        /* --- Title Styling --- */
+        .title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* --- Form and Input Styling --- */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 50px; 
+            border: none;
+            border-radius: 10px;
+            background-color: #f4f4f4;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            box-sizing: border-box;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05); 
+            transition: background-color 0.3s;
+        }
+
+        .input-group input:focus {
+            background-color: #fff;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), 0 0 0 1px #ccc;
+        }
+
+        .input-group input::placeholder {
+            color: #999;
+        }
+
+        /* Icon inside the input field */
+        .input-group .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #222222;
+            font-size: 16px;
+        }
+
+        /* --- Login Button Styling --- */
+        .login-button {
+            background-color: #2660cc;
+            color: rgba(245, 245, 245, 0.926);
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+        }
+
+        .login-button:hover {
+            background-color: #ffffff;
+            color: #2660cc;
+        }
+        
+        .login-button:disabled {
+            background-color: #666;
+            cursor: not-allowed;
+        }
+
+        /* --- Links Styling --- */
+        .forgot-password {
+            display: block;
+            font-size: 12px;
+            color: #bcb8b8;
+            margin-bottom: 40px;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .forgot-password:hover {
+            color: #ececec;
+        }
+
+        .signup-link {
+            font-size: 12px;
+            color: #999999;
+            margin-top: 10px;
+        }
+
+        .signup-link a {
+            color: #2660cc;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message {
+            color: #28a745;
+            font-size: 12px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-section">
+            <i class="fas fa-users"></i>
+            <h3>RECORD MANAGEMENT</h3>
+        </div>
+
+        <form class="login-form" id="loginForm">
+            <div class="input-group">
+                <i class="far fa-user icon"></i>
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock icon"></i>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="login-button" id="loginButton">LOGIN</button>
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+        </form>
+
+        <a href="#" class="forgot-password" id="forgotPasswordBtn">Forgot Password?</a>
+
+        <div class="signup-link">
+            Don't have an account? <a id="signupBtn">Sign up</a>
+        </div>
+    </div>
+
+    <script>
+        // Initialize default users if not exists
+        function initializeDefaultUsers() {
+            if (!localStorage.getItem('users')) {
+                const defaultUsers = [
+                    { id: 1, fullname: 'Admin User', email: 'admin@example.com', username: 'admin', password: 'admin123', user_role: 'Admin' },
+                    { id: 2, fullname: 'John Doe', email: 'john@example.com', username: 'john', password: 'john123', user_role: 'Staff' },
+                    { id: 3, fullname: 'Jane Smith', email: 'jane@example.com', username: 'jane', password: 'jane123', user_role: 'Regular User' }
+                ];
+                localStorage.setItem('users', JSON.stringify(defaultUsers));
+                localStorage.setItem('nextUserId', '4');
+            }
+        }
+
+        initializeDefaultUsers();
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const button = document.getElementById('loginButton');
+            const errorDiv = document.getElementById('errorMessage');
+            const successDiv = document.getElementById('successMessage');
+
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            if (username === "" || password === "") {
+                errorDiv.textContent = "Please fill in both fields!";
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            button.disabled = true;
+
+            // Simulate network delay
+            setTimeout(() => {
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                const user = users.find(u => u.username === username && u.password === password);
+
+                if (user) {
+                    successDiv.textContent = "Login successful! Redirecting...";
+                    successDiv.style.display = 'block';
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 1000);
+                } else {
+                    errorDiv.textContent = "Invalid username or password.";
+                    errorDiv.style.display = 'block';
+                    button.innerHTML = 'LOGIN';
+                    button.disabled = false;
+                }
+            }, 500);
+        });
+
+        // Forgot Password
+        document.getElementById('forgotPasswordBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('For demo purposes:\nUsername: admin\nPassword: admin123\n\nOr use: john/john123 or jane/jane123');
+        });
+
+        // Sign Up
+        document.getElementById('signupBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Sign up is not available in this demo.\n\nUse existing accounts:\nadmin / admin123\njohn / john123\njane / jane123');
+        });
+    </script>
+</body>
+</html>
