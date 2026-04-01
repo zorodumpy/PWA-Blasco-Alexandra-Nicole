@@ -1,6 +1,6 @@
 const CACHE_NAME = 'rms-v1';
 const ASSETS = [
-  'login.html',
+  'index.html',
   'dashboard.html',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
